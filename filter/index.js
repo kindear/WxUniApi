@@ -3,6 +3,7 @@
  * 日期: 2022-08-30
  * 描述: IP 拦截中间件
  */
+ var createError = require('http-errors')
 const { LimitIP } = require("../config");
 /**
  * 获取客户端IP
@@ -25,12 +26,7 @@ function IPFilter(req, res, next) {
   if (LimitIP == "0.0.0.0" || clientIP == LimitIP) {
     next();
   } else {
-    res.status(403).json({
-      code: 403,
-      msg: "IP不在允许范围",
-      data: null,
-    });
-    return;
+    return next(createError(403,"IP 地址不在白名单"))
   }
 }
 

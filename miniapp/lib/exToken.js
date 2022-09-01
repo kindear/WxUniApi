@@ -1,5 +1,5 @@
 const redis = require("redis");
-
+var createError = require('http-errors');
 const axios = require("axios");
 const { appId, appSecret } = require("../config");
 // 全局配置 -- 初始化Redis连接
@@ -45,6 +45,8 @@ async function getToken() {
     })
     await redisClient.quit(); // 退出
     return qres.data.access_token;
+  }else{
+    throw new Error(qres.data.errmsg);
   }
 }
 
